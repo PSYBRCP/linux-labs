@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Simple system report by Ashley
+# Simple system report by PSYBRCP
 
 set -euo pipefail
 
