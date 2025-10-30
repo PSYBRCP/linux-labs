@@ -1,3 +1,8 @@
+# To create a new script from terminal:
+# cat > FILENAME.sh << 'EOF'
+# write code in between
+# End with EOF
+
 #!/usr/bin/env bash
 # Simple system report by PSYBRCP
 
