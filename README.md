@@ -32,7 +32,7 @@ This reflects standard best practices for securing sensitive or environment-spec
 
 ---
 
-### Run the script
+### Run
 
 ```bash
 # Basic full report
