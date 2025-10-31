@@ -40,7 +40,7 @@ This reflects standard best practices for securing sensitive or environment-spec
 
 # Faster version (skips ports and process checks)
 ./system_reportv2.sh --quick
-
+```
 ---
 
 ## 2. Diagnostics Report
