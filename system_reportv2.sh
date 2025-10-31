@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Enhanced system report by Ashley
+# Enhanced system report by PSYBRCP
 
 set -euo pipefail
 
