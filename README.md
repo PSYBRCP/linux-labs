@@ -16,6 +16,16 @@ This tool is useful when you need to capture a snapshot of a system for troubles
 
 ---
 
+## Data Safety & .gitignore
+
+This project intentionally excludes all generated data files (`*.txt`, `*.log`, etc.) from version control using a `.gitignore` file.
+
+Only scripts and documentation are published — any system data, logs, or reports created during testing stay local.
+
+This reflects standard best practices for securing sensitive or environment-specific information in development and security workflows.
+
+---
+
 ### Files
 - `system_report.sh` – Original version
 - `system_reportv2.sh` – Enhanced version with more functionality and modular structure
