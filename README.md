@@ -41,13 +41,16 @@ This reflects standard best practices for securing sensitive or environment-spec
 # Faster version (skips ports and process checks)
 ./system_reportv2.sh --quick
 
+---
+
 ## 2. Diagnostics Report
 
-Generates a quick system diagnostics snapshot with hardware/OS details, CPU+memory stats, disk usage, and a basic network reachability check. Designed to be fast, readable, and safe for local use.
+Generates a quick system diagnostics snapshot with hardware/OS details, CPU + memory stats, disk usage, and a basic network reachability check. Designed to be fast, readable, and safe for local use.
 
 ### Files
-- `diagnostics_report.sh` — main script that writes a timestamped report (e.g., `diagnostics_report_YYYY-MM-DD_HH-MM-SS.txt`)
+- `diagnostics_report.sh` – Main script that writes a timestamped report file (e.g., `diagnostics_report_2025-10-31_14-22-18.txt`)
 
 ### Run
 ```bash
 ./diagnostics_report.sh
+
