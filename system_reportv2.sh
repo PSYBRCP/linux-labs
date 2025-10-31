@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
-# Enhanced system report by PSYBRCP
 
 set -euo pipefail
 
 OUT="system_reportv2_$(date +%Y-%m-%d_%H-%M-%S).txt"
 
-# Helper to format section headers
 section () { printf "\n==================== %s ====================\n" "$1"; }
 
-# If user supplies "--quick", skip heavy checks
 QUICK=false
 if [[ "${1:-}" == "--quick" ]]; then
   QUICK=true
 fi
 
 {
-  echo "System Report"
+  echo "System Report (v2)"
   echo "Generated: $(date)"
   echo "User: $(whoami)"
   echo "Host: $(hostname)"
@@ -39,14 +36,15 @@ fi
   free -h
 
   section "Disk (Top-Level Mounts)"
-  df -h -x tmpfs -x devtmpfs | awk 'NR==1 || $6 ~ /^\\/$|^\\/home|^\\/boot/'
+  # NOTE: correct awk pattern (no over-escaping)
+  df -h -x tmpfs -x devtmpfs | awk 'NR==1 || $6 ~ /^\/$|^\/home|^\/boot/'
 
   section "Networking (IPv4)"
   ip -4 addr show | awk '/inet /{print $2 " -> " $NF}'
   echo "Default route: $(ip route | awk '/default/ {print $3 " via " $5; exit}')"
 
-  if ! \$QUICK; then
-    section "Top 10 Processes (by CPU usage)"
+  if ! $QUICK; then
+    section "Top 10 Processes (by CPU)"
     ps aux --sort=-%cpu | head -n 11
 
     section "Listening Ports"
@@ -60,7 +58,7 @@ fi
     echo "(Skipped process and port checks for faster run)"
   fi
 
-} | tee "\$OUT"
+} | tee "$OUT"
 
 echo
-echo "Saved report to: \$OUT"
+echo "Saved report to: $OUT"
