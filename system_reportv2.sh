@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-OUT="system_report_$(date +%Y-%m-%d_%H-%M-%S).txt"
+OUT="system_reportv2_$(date +%Y-%m-%d_%H-%M-%S).txt"
 
 # Helper to format section headers
 section () { printf "\n==================== %s ====================\n" "$1"; }
