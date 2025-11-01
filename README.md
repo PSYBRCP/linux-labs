@@ -87,11 +87,11 @@ Log files are **excluded from Git** via `.gitignore` (only scripts are versioned
 
 ### Run
 
-**1. Generate fake logs (example: 2000 entries)**  
+#### 1. Generate fake logs (example: 2000 entries)**  
 ```bash
 ./generate_fake_logs.sh 2000
 
-**2. Analyze fake logs
+#### 2. Analyze fake logs
 ./analyze_logs.sh
 ```
 
