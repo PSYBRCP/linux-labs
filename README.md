@@ -53,12 +53,12 @@ Generates a quick system diagnostics snapshot with hardware/OS details, CPU + me
 ### Run
 ```bash
 ./diagnostics_report.sh
-
+```
 ---
 
 ## Project 3: Log Generation & Analysis
 
-This project simulates a simplified web server logging environment using Bash scripting.  
+This project simulates a simplified web server logging environment using Bash scripting.
 It includes two main scripts: one for generating synthetic access logs, and another for analyzing them to extract insights similar to what you’d find in cybersecurity, network monitoring, or SIEM workflows.
 
 ---
@@ -72,15 +72,15 @@ It includes two main scripts: one for generating synthetic access logs, and anot
 ---
 
 ### Features
-Generates thousands of fake logs with realistic request fields  
+Generates thousands of fake logs with realistic request fields 
 Extracts:
 - Total requests
 - Number of unique IPs
 - Top 10 IP addresses
 - Top 10 requested paths
-- HTTP status code counts  
-Automatically timestamps output reports  
-Works fully offline — no real traffic or sensitive data involved  
+- HTTP status code counts
+Automatically timestamps output reports
+Works fully offline — no real traffic or sensitive data involved
 Log files are **excluded from Git** via `.gitignore` (only scripts are versioned)
 
 ---
