@@ -1,4 +1,4 @@
-# To create a new script from terminal:
+# To create a new script from terminal
 # cat > FILENAME.sh << 'EOF'
 # write code in between
 # End with EOF
@@ -6,46 +6,61 @@
 #!/usr/bin/env bash
 # Simple system report by PSYBRCP
 
+#!/usr/bin/env bash
 set -euo pipefail
 
-OUT="system_report_$(date +%Y-%m-%d_%H-%M-%S).txt"
+report_time="$(date -u '+%a %b %e %T %Z %Y')"
+user_name="${USER:-unknown}"
+host_name="$(hostname)"
 
-# Helper to line up sections
-section () { printf "\n==================== %s ====================\n" "$1"; }
-
-{
-  echo "System Report"
-  echo "Generated: $(date)"
-  echo "User: $(whoami)"
-  echo "Host: $(hostname)"
-  echo "--------------------------------------------"
-
-  section "OS"
-  # Try lsb_release; fallback to /etc/os-release
-  if command -v lsb_release >/dev/null 2>&1; then
-    echo "Distro: $(lsb_release -ds)"
-  else
-    . /etc/os-release && echo "Distro: $PRETTY_NAME"
-  fi
-  echo "Kernel: $(uname -r)"
-  echo "Uptime: $(uptime -p)"
-
-  section "CPU"
-  echo "Model:  $(lscpu | awk -F: '/Model name/ {print $2}' | sed 's/^ *//')"
-  echo "Cores:  $(lscpu | awk -F: '/^CPU\\(s\\)/ {print $2}' | sed 's/^ *//')"
-  echo "Arch:   $(uname -m)"
-
-  section "Memory"
-  free -h
-
-  section "Disk (Top-Level Mounts)"
-  df -h -x tmpfs -x devtmpfs | awk 'NR==1 || $6 ~ /^\\/$|^\\/home|^\\/boot/'
-
-  section "Networking (IPv4)"
-  ip -4 addr show | awk '/inet /{print $2 " -> " $NF}'
-  echo "Default route: $(ip route | awk '/default/ {print $3 " via " $5; exit}')"
-
-} | tee "$OUT"
-
+echo "System Report"
+echo "Generated: $report_time"
+echo "User: $user_name"
+echo "Host: $host_name"
+echo "--------------------------------------------"
 echo
-echo "Saved report to: $OUT"
+
+###################### OS ######################
+echo "==================== OS ===================="
+if command -v lsb_release >/dev/null 2>&1; then
+  distro="$(lsb_release -ds)"
+else
+  distro="$(. /etc/os-release; echo "$NAME $VERSION")"
+fi
+kernel="$(uname -r)"
+uptime_str="$(uptime -p | sed 's/^up //')"
+
+echo "Distro: $distro"
+echo "Kernel: $kernel"
+echo "Uptime: up $uptime_str"
+echo
+
+##################### CPU ######################
+echo "==================== CPU ===================="
+cpu_model="$(lscpu | awk -F: '/^Model name/{gsub(/^ +/,"",$2); print $2}')"
+cpu_cores_logical="$(nproc)"
+cpu_arch="$(uname -m)"
+
+echo "Model:  ${cpu_model:-unknown}"
+echo "Cores:  ${cpu_cores_logical:-unknown} (logical)"
+echo "Arch:   ${cpu_arch}"
+echo
+
+################### Memory #####################
+echo "==================== Memory ===================="
+free -h
+echo
+
+################ Disk (Top-Level Mounts) ################
+echo "==================== Disk (Top-Level Mounts) ===================="
+# Show real filesystems; hide tmpfs, devtmpfs, squashfs (snaps), cgroup, overlay
+df -hT -x tmpfs -x devtmpfs -x squashfs -x overlay -x efivarfs \
+  | awk 'NR==1 || $2 ~ /ext[234]|xfs|btrfs|zfs|ntfs|vfat|apfs/ {
+           printf "%-20s %-10s %-10s %-10s %-10s %-s\n",
+                  $1, $2, $3, $4, $6, $7
+        }' \
+  | sed '1s/Type      /Type      /' \
+  | sed '1s/Available/Avail     /'
+echo
+
+
